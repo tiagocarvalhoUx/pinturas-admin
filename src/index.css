@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Sekuya";
+  src: url("/fonts/Sekuya-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0a0f; color: #f1f1f3; font-family: system-ui, sans-serif; }
+  body { background: #0a0a0f; color: #f1f1f3; font-family: "Sekuya", system-ui, sans-serif; }
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: #111118; }
   ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 99px; }
