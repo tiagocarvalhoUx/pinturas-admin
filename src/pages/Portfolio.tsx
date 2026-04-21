@@ -6,6 +6,7 @@ import api from '../api/axios';
 interface PortItem {
   _id: string; title: string; description?: string; serviceType: string;
   beforeImage?: { url: string }; afterImage?: { url: string };
+  extraImages?: { url: string; type: 'before' | 'after' }[];
   area?: number; duration?: string; location?: string; featured: boolean;
 }
 const SERVICES = [
@@ -121,7 +122,9 @@ export function Portfolio() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => {
             const color = SVC_COLOR[item.serviceType] || 'amber';
-            const thumb = item.afterImage?.url || item.beforeImage?.url;
+            const thumb = item.afterImage?.url || item.beforeImage?.url
+              || item.extraImages?.find(e => e.type === 'after')?.url
+              || item.extraImages?.[0]?.url;
             return (
               <div key={item._id} className="bg-[#111118] border border-white/5 rounded-2xl overflow-hidden group">
                 <div className="relative h-36 bg-zinc-900">
@@ -168,11 +171,31 @@ export function Portfolio() {
             </div>
 
             <div className="p-5 space-y-5">
-              {/* Fotos */}
+              {/* Fotos principais */}
               <div className="grid grid-cols-2 gap-3">
                 <ImgPicker label="Foto Antes" preview={beforePrev} existing={editing?.beforeImage?.url} onFile={(f) => pickFile('before', f)} />
                 <ImgPicker label="Foto Depois" preview={afterPrev} existing={editing?.afterImage?.url} onFile={(f) => pickFile('after', f)} />
               </div>
+
+              {/* Extra images (somente leitura no modal) */}
+              {editing?.extraImages && editing.extraImages.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-zinc-400 mb-2 uppercase tracking-wide">
+                    Fotos extras ({editing.extraImages.length})
+                  </p>
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {editing.extraImages.map((img, i) => (
+                      <div key={i} className="shrink-0 relative">
+                        <img src={img.url} alt="" className="h-20 w-20 rounded-xl object-cover border border-white/10" />
+                        <span className={`absolute bottom-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${img.type === 'after' ? 'bg-amber-500 text-black' : 'bg-zinc-700 text-white'}`}>
+                          {img.type === 'after' ? 'DEPOIS' : 'ANTES'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
 
               {/* Título */}
               <div>
