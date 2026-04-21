@@ -1,37 +1,16 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Philosopher";
-  src: url("/fonts/Philosopher-Regular.ttf") format("truetype");
+  font-family: "Alice";
+  src: url("/fonts/Alice-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Philosopher";
-  src: url("/fonts/Philosopher-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Philosopher";
-  src: url("/fonts/Philosopher-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Philosopher";
-  src: url("/fonts/Philosopher-BoldItalic.ttf") format("truetype");
-  font-weight: 700;
-  font-style: italic;
   font-display: swap;
 }
 
 @layer base {
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0a0f; color: #f1f1f3; font-family: "Philosopher", system-ui, sans-serif; }
+  body { background: #0a0a0f; color: #f1f1f3; font-family: "Alice", system-ui, sans-serif; }
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: #111118; }
   ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 99px; }
