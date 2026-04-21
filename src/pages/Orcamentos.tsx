@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, X, ChevronDown, MapPin, Ruler, Calendar, DollarSign, MessageSquare, Image as ImgIcon } from 'lucide-react';
+import { RefreshCw, X, ChevronDown, MapPin, Ruler, Calendar, DollarSign, MessageSquare, Image as ImgIcon, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../api/axios';
 
@@ -52,6 +52,17 @@ export function Orcamentos() {
   const open = (b: Budget) => {
     setSelected(b);
     setPatch({ status: b.status, finalPrice: String(b.finalPrice||''), adminNotes: b.adminNotes||'', scheduledDate: b.scheduledDate ? b.scheduledDate.slice(0,10) : '' });
+  };
+
+  const remove = async () => {
+    if (!selected) return;
+    if (!confirm(`Excluir o orçamento de "${selected.client?.name}"? Esta ação não pode ser desfeita.`)) return;
+    try {
+      await api.delete(`/budgets/${selected._id}`);
+      toast.success('Orçamento excluído.');
+      setSelected(null);
+      load();
+    } catch (e: any) { toast.error(e.response?.data?.message || 'Erro ao excluir.'); }
   };
 
   const save = async () => {
@@ -219,11 +230,17 @@ export function Orcamentos() {
                     rows={3} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 outline-none focus:border-amber-500/40 transition resize-none" />
                 </div>
 
-                <button onClick={save} disabled={saving}
-                  className="w-full bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-black font-bold rounded-xl py-3 flex items-center justify-center gap-2 transition">
-                  {saving ? <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"/> : null}
-                  {saving ? 'Salvando...' : 'Salvar Alterações'}
-                </button>
+                <div className="flex gap-3">
+                  <button onClick={remove}
+                    className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-bold rounded-xl px-4 py-3 transition">
+                    <Trash2 size={15}/> Excluir
+                  </button>
+                  <button onClick={save} disabled={saving}
+                    className="flex-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-black font-bold rounded-xl py-3 flex items-center justify-center gap-2 transition">
+                    {saving ? <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"/> : null}
+                    {saving ? 'Salvando...' : 'Salvar Alterações'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
